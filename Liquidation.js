@@ -103,4 +103,4 @@ setInterval(() => {
     main().catch(error => {
         console.error('Error in main loop:', error);
     });
-}, 5000);
+}, 900000);
