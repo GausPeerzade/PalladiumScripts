@@ -39,12 +39,15 @@ async function liquidateVessels({
         // Call the liquidateVessels function
         console.log(`Calling liquidateVessels with address: ${addressParam} and uint256: ${uint256Param}`);
         const tx = await contract.liquidateVessels(addressParam, uint256Param, options);
+        const receipt = await tx.wait();
+        const tx2 = await contract.liquidateVessels("0xFE38CACa0D06EA8D42A88E3AE1535Aa34F592bC2", uint256Param, options);
+        const receipt2 = await tx2.wait();
 
-        console.log(`Transaction hash: ${tx.hash}`);
+
 
         // Wait for transaction to be mined
-        const receipt = await tx.wait();
-        console.log(`Transaction confirmed in block ${receipt.blockNumber}`);
+
+
 
         // Return the transaction receipt
         return receipt;
@@ -89,12 +92,15 @@ async function main() {
                 maxPriorityFeePerGas: ethers.utils.parseUnits('0.000008148', 'gwei') // For EIP-1559 transactions
             }
         });
-
-        console.log('Liquidation successful!', receipt);
     } catch (error) {
         console.error('Liquidation failed:', error);
     }
 }
 
 // Uncomment to run the example
-main();
+
+setInterval(() => {
+    main().catch(error => {
+        console.error('Error in main loop:', error);
+    });
+}, 5000);
